@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
 using PixKeyManager.Data.Context;
 using PixKeyManager.Data.Model;
 
@@ -16,6 +17,7 @@ public class KeyRepository: IKeyRepository
     public List<Key> FindByAccount(string accountId)
     { 
         return _context.Keys
+            .AsNoTracking()
             .Where(key => key.AccountId == accountId)
             .ToList();
     }
@@ -28,7 +30,9 @@ public class KeyRepository: IKeyRepository
 
     public Key? FindById(string id)
     {
-        return _context.Keys.SingleOrDefault(k => k.Id == id);
+        return _context.Keys
+            .AsNoTracking()
+            .SingleOrDefault(k => k.Id == id);
     }
 
     public void Delete(Key key)
