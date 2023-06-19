@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <None Remove="Data\" />
+    <None Remove="Data\Context\" />
+    <None Remove="Data\Model\" />
+    <None Remove="Domain\" />
+    <None Remove="Domain\Model\" />
+    <None Remove="Data\Repository\" />
+    <None Remove="UseCase\" />
+    <None Remove="Domain\Builder\" />
+    <None Remove="Domain\Model\Key\" />
+    <None Remove="UseCase\Keys\" />
+    <None Remove="Exception\" />
+    <None Remove="Exceptions\" />
+    <None Remove="Resources\Exceptions.rsx" />
+    <None Remove="Filters\" />
+    <None Remove="Domain\Model\Base\" />
+    <None Remove="Domain\Model\User\" />
+    <None Remove="UseCase\Auth\" />
+    <None Remove="Domain\Model\Auth\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Data\Context\" />
+    <Folder Include="Data\Model\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Domain\Model\" />
+    <Folder Include="Data\Repository\" />
+    <Folder Include="UseCase\" />
+    <Folder Include="Domain\Builder\" />
+    <Folder Include="Domain\Model\Key\" />
+    <Folder Include="UseCase\Keys\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Filters\" />
+    <Folder Include="Domain\Model\Base\" />
+    <Folder Include="UseCase\Auth\" />
+    <Folder Include="Domain\Model\Auth\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.7">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
+  </ItemGroup>
+</Project>
