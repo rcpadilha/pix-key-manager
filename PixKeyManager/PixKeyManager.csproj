@@ -27,6 +27,8 @@
     <None Remove="Domain\Model\User\" />
     <None Remove="UseCase\Auth\" />
     <None Remove="Domain\Model\Auth\" />
+    <None Remove="Utils\" />
+    <None Remove="Utils\Jwt\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -44,6 +46,8 @@
     <Folder Include="Domain\Model\Base\" />
     <Folder Include="UseCase\Auth\" />
     <Folder Include="Domain\Model\Auth\" />
+    <Folder Include="Utils\" />
+    <Folder Include="Utils\Jwt\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />

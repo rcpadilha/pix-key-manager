@@ -9,11 +9,35 @@ using PixKeyManager.Domain.Builder;
 using PixKeyManager.Filters;
 using PixKeyManager.UseCase.Auth;
 using PixKeyManager.UseCase.Keys;
+using PixKeyManager.Utils.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
 
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = false,
+
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
+
+// Controllers
 builder.Services.AddControllers();
 
 // Swagger
@@ -38,6 +62,9 @@ builder.Services.AddScoped<IRemoveKeyUseCase, RemoveKeyUseCase>();
 
 builder.Services.AddScoped<IAuthUseCase, AuthUseCase>();
 
+// DI - Utils
+builder.Services.AddSingleton<IJwtTokenUtils, JwtTokenUtils>();
+
 // Exception Filter
 builder.Services.AddMvcCore(
     options => options.Filters.Add<PixExceptionFilter>());
@@ -46,30 +73,6 @@ builder.Services.AddMvcCore(
 builder.Logging
     .ClearProviders()
     .AddConsole();
-
-// Authentication
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-
-        IssuerSigningKey = new SymmetricSecurityKey (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
-
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = false,
-
-        ValidateIssuerSigningKey = true
-    };
-});
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -90,6 +93,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

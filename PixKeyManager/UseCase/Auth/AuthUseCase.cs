@@ -7,19 +7,20 @@ using PixKeyManager.Data.Model;
 using PixKeyManager.Data.Repository;
 using PixKeyManager.Domain.Model.Auth;
 using PixKeyManager.Exceptions;
+using PixKeyManager.Utils.Jwt;
 
 namespace PixKeyManager.UseCase.Auth;
 
 public class AuthUseCase: IAuthUseCase
 {
     private IUserRepository _userRepository;
-    private IConfiguration _configuration;
+    private IJwtTokenUtils _tokenUtils;
 
     public AuthUseCase(IUserRepository userRepository,
-                       IConfiguration configuration)
+                       IJwtTokenUtils tokenUtils)
     {
         this._userRepository = userRepository;
-        this._configuration = configuration;
+        this._tokenUtils = tokenUtils;
     }
 
     public AuthResultDto Execute(AuthDto auth)
@@ -28,48 +29,10 @@ public class AuthUseCase: IAuthUseCase
 
         if (user != null)
         {
-            return buildToken(user);
+            return _tokenUtils.BuildToken(user);
         }
 
         throw new AuthException();
-    }
-
-    private AuthResultDto buildToken(User user)
-    {
-        var jwtConfig = _configuration.GetSection("Jwt");
-
-        var issuer = jwtConfig.GetValue<string>("Issuer");
-        var audience = jwtConfig.GetValue<string>("Audience");
-
-        var key = jwtConfig.GetValue<string>("Key")!;
-        var keyBytes = Encoding.ASCII.GetBytes(key);
-        var duration = jwtConfig.GetValue<int>("Duration");
-
-        var issuedAt = DateTime.Now;
-        var expiresIn = issuedAt.AddMinutes(duration);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Login)
-            }),
-            Issuer = issuer,
-            Audience = audience,
-            SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha512Signature),
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-
-        var jwtToken = tokenHandler.WriteToken(token);
-
-        return new AuthResultDto {
-            Token = jwtToken,
-            IssuedAt = issuedAt,
-            ExpiresIn = expiresIn,
-        };
     }
 }
 

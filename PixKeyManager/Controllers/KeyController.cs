@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PixKeyManager.Domain.Model.Key;
 using PixKeyManager.UseCase.Keys;
@@ -6,6 +7,7 @@ using PixKeyManager.UseCase.Keys;
 namespace PixKeyManager.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public class KeyController : Controller
 {
