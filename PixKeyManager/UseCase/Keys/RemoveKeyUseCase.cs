@@ -1,5 +1,4 @@
-﻿using System;
-using PixKeyManager.Data.Repository;
+﻿using PixKeyManager.Data.Repository;
 using PixKeyManager.Exceptions;
 
 namespace PixKeyManager.UseCase.Keys;
@@ -10,10 +9,10 @@ public class RemoveKeyUseCase: IRemoveKeyUseCase
 
     public RemoveKeyUseCase(IKeyRepository keyRepository)
     {
-        this._keyRepository = keyRepository;
+        _keyRepository = keyRepository;
     }
 
-    public void execute(String id)
+    public void Execute(string id)
     {
         var key = _keyRepository.FindById(id);
 

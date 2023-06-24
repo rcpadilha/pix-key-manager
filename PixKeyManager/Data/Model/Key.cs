@@ -7,7 +7,7 @@ namespace PixKeyManager.Data.Model;
 public class Key
 {
 	[Key, Required]
-    [StringLength(16)]
+    [StringLength(36)]
     public string? Id { get; set; }
 
     [StringLength(140)]
@@ -16,6 +16,8 @@ public class Key
     [StringLength(10)]
     public required string Type { get; set; }
 
+    public required DateTime CreatedAt { get; set; }
+
 	public required string AccountId { get; set; }
-    public Account? Account { get; set; }
+    public virtual Account? Account { get; set; }
 }

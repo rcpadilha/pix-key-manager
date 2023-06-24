@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PixKeyManager.Domain.Model.Auth;
 using PixKeyManager.UseCase.Auth;
@@ -15,11 +14,11 @@ public class AuthController: Controller
 
     public AuthController(IAuthUseCase auth)
     {
-        this._auth = auth;
+        _auth = auth;
     }
 
     [HttpPost]
-    public IActionResult authenticate(AuthDto authData)
+    public IActionResult Authenticate(AuthDto authData)
     {
         var authResult = _auth.Execute(authData);
         return Ok(authResult);

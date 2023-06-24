@@ -1,5 +1,4 @@
-﻿using System;
-namespace PixKeyManager.Domain.Model.Auth;
+﻿namespace PixKeyManager.Domain.Model.Auth;
 
 public class AuthConfigDto
 {

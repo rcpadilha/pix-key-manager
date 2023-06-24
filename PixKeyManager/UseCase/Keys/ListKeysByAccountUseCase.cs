@@ -1,5 +1,4 @@
-﻿using System;
-using PixKeyManager.Data.Repository;
+﻿using PixKeyManager.Data.Repository;
 using PixKeyManager.Domain.Builder;
 using PixKeyManager.Domain.Model.Key;
 
@@ -12,14 +11,14 @@ public class ListKeysByAccountUseCase: IListKeysByAccountUseCase
 
     public ListKeysByAccountUseCase(IKeyBuilder keyBuilder, IKeyRepository keyRepository)
     {
-        this._keyBuilder = keyBuilder;
-        this._keyRepository = keyRepository;
+        _keyBuilder = keyBuilder;
+        _keyRepository = keyRepository;
     }
 
-    public List<KeyDto> execute(string accountId)
+    public List<KeyDto> Execute(string accountId)
     {
         var keys = _keyRepository.FindByAccount(accountId);
-        return _keyBuilder.build(keys);
+        return _keyBuilder.Build(keys);
     }
 }
 

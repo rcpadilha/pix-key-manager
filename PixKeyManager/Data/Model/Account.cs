@@ -7,12 +7,12 @@ namespace PixKeyManager.Data.Model;
 public class Account
 {
 	[Key, Required]
-    [StringLength(16)]
-    public required string Id { get; set; }
+    [StringLength(36)]
+    public string? Id { get; set; }
 
     [StringLength(10)]
     public required string Number { get; set; }
-    public required string UserId { get; set; }
+    public string? UserId { get; set; }
 
     public virtual required User User { get; set; }
 }

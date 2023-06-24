@@ -1,9 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using PixKeyManager.Data.Model;
+﻿using BC = BCrypt.Net.BCrypt;
 using PixKeyManager.Data.Repository;
 using PixKeyManager.Domain.Model.Auth;
 using PixKeyManager.Exceptions;
@@ -13,26 +8,29 @@ namespace PixKeyManager.UseCase.Auth;
 
 public class AuthUseCase: IAuthUseCase
 {
-    private IUserRepository _userRepository;
-    private IJwtTokenUtils _tokenUtils;
+    private readonly IUserRepository _userRepository;
+    private readonly IAccountRepository _accountRepository;   
+    private readonly IJwtTokenUtils _tokenUtils;
 
     public AuthUseCase(IUserRepository userRepository,
+                       IAccountRepository accountRepository,
                        IJwtTokenUtils tokenUtils)
     {
-        this._userRepository = userRepository;
-        this._tokenUtils = tokenUtils;
+        _userRepository = userRepository;
+        _accountRepository = accountRepository;
+        _tokenUtils = tokenUtils;
     }
 
     public AuthResultDto Execute(AuthDto auth)
     {
-        var user = _userRepository.Find(auth.Login, auth.Password);
+        var user = _userRepository.Find(auth.Login);
 
-        if (user != null)
-        {
-            return _tokenUtils.BuildToken(user);
+        if (user == null || !BC.Verify(auth.Password, user.Password)) {
+            throw new AuthException();
         }
 
-        throw new AuthException();
+        var account = _accountRepository.GetAccount(user.Id!);
+        return _tokenUtils.BuildToken(user, account);
     }
 }
 

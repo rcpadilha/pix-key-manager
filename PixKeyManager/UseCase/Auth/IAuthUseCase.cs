@@ -1,5 +1,4 @@
-﻿using System;
-using PixKeyManager.Domain.Model.Auth;
+﻿using PixKeyManager.Domain.Model.Auth;
 
 namespace PixKeyManager.UseCase.Auth;
 

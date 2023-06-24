@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,7 +15,7 @@ namespace PixKeyManager.Migrations
                 name: "user",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    Id = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Login = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
@@ -27,9 +28,9 @@ namespace PixKeyManager.Migrations
                 name: "account",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    Id = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Number = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    UserId = table.Column<string>(type: "character varying(16)", nullable: false)
+                    UserId = table.Column<string>(type: "character varying(36)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,18 +39,18 @@ namespace PixKeyManager.Migrations
                         name: "FK_account_user_UserId",
                         column: x => x.UserId,
                         principalTable: "user",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "keys",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "character varying(16)", maxLength: 16, nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    Id = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Value = table.Column<string>(type: "character varying(140)", maxLength: 140, nullable: false),
                     Type = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    AccountId = table.Column<string>(type: "character varying(16)", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    AccountId = table.Column<string>(type: "character varying(36)", nullable: false)
                 },
                 constraints: table =>
                 {

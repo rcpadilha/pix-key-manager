@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PixKeyManager.Data.Context;
 using PixKeyManager.Data.Model;
 
@@ -11,15 +10,15 @@ public class UserRepository: IUserRepository
 
     public UserRepository(PixKeyContext context)
     {
-        this._context = context;
+        _context = context;
     }
 
-    public User? Find(string login, string password)
+    public User? Find(string login)
     {
-        var user = this._context.Users
+        var user = _context.Users
             .AsNoTracking()
             .SingleOrDefault(
-                user => user.Login == login && user.Password == password);
+                user => user.Login == login);
 
         return user;
     }

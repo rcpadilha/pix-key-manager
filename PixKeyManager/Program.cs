@@ -1,12 +1,12 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PixKeyManager.Data.Context;
 using PixKeyManager.Data.Repository;
 using PixKeyManager.Domain.Builder;
 using PixKeyManager.Filters;
+using PixKeyManager.UseCase.Account;
 using PixKeyManager.UseCase.Auth;
 using PixKeyManager.UseCase.Keys;
 using PixKeyManager.Utils.Jwt;
@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(options =>
 
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = false,
+        ValidateLifetime = true,
 
         ValidateIssuerSigningKey = true
     };
@@ -51,9 +51,11 @@ builder.Services.AddDbContext<PixKeyContext>(
 // DI - Repositories
 builder.Services.AddScoped<IKeyRepository, KeyRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 // DI - Builders
 builder.Services.AddSingleton<IKeyBuilder, KeyBuilder>();
+builder.Services.AddSingleton<IAccountBuilder, AccountBuilder>();
 
 // DI - UseCases
 builder.Services.AddScoped<IRegisterKeyUseCase, RegisterKeyUseCase>();
@@ -61,6 +63,8 @@ builder.Services.AddScoped<IListKeysByAccountUseCase, ListKeysByAccountUseCase>(
 builder.Services.AddScoped<IRemoveKeyUseCase, RemoveKeyUseCase>();
 
 builder.Services.AddScoped<IAuthUseCase, AuthUseCase>();
+
+builder.Services.AddScoped<IRegisterAccountUseCase, RegisterAccountUseCase>();
 
 // DI - Utils
 builder.Services.AddSingleton<IJwtTokenUtils, JwtTokenUtils>();

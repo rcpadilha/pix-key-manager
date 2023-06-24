@@ -2,9 +2,8 @@
 
 namespace PixKeyManager.Domain.Model.Key;
 
-public class KeyDto
+public class RegisterKeyResultDto
 {
-    public string Id { get; }
     public string Value { get; }
 
     public DateTime CreatedAt { get; }
@@ -12,13 +11,11 @@ public class KeyDto
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public KeyType Type { get; }
 
-    public KeyDto(string id, string value, KeyType type, DateTime createdAt)
+    public RegisterKeyResultDto(string value, KeyType type, DateTime createdAt)
     {
-        Id = id;
         Value = value;
         Type = type;
         CreatedAt = createdAt;
     }
 }
-
 

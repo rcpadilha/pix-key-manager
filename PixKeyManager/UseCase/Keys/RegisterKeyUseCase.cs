@@ -1,5 +1,4 @@
-﻿using System;
-using PixKeyManager.Data.Repository;
+﻿using PixKeyManager.Data.Repository;
 using PixKeyManager.Domain.Builder;
 using PixKeyManager.Domain.Model.Key;
 
@@ -12,13 +11,19 @@ public class RegisterKeyUseCase: IRegisterKeyUseCase
 
 	public RegisterKeyUseCase(IKeyBuilder builder, IKeyRepository repository)
 	{
-        this._builder = builder;
-        this._repository = repository;
+        _builder = builder;
+        _repository = repository;
 	}
 
-    public void execute(RegisterKeyDto key)
+    public RegisterKeyResultDto Execute(RegisterKeyDto key, string accountId)
     {
-        var entity = _builder.build(key);
+        if (key.Type == KeyType.EVP) {
+            key.Value = Guid.NewGuid().ToString();
+        }
+
+        var entity = _builder.Build(key, accountId);
         _repository.Save(entity);
+
+        return _builder.BuildResult(entity);
     }
 }

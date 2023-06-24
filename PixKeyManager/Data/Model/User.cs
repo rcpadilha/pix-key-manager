@@ -7,7 +7,7 @@ namespace PixKeyManager.Data.Model;
 public class User
 {
 	[Key, Required]
-    [StringLength(16)]
+    [StringLength(36)]
     public string? Id { get; set; }
 
     [StringLength(50)]

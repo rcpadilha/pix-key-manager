@@ -1,15 +1,16 @@
-﻿using System;
-using PixKeyManager.Data.Model;
+﻿using PixKeyManager.Data.Model;
 using PixKeyManager.Domain.Model.Key;
 
 namespace PixKeyManager.Domain.Builder;
 
 public interface IKeyBuilder
 {
-    Key build(RegisterKeyDto dto);
+    Key Build(RegisterKeyDto dto, string accountId);
 
-    KeyDto build(Key entity);
+    KeyDto Build(Key entity);
 
-    List<KeyDto> build(List<Key> entities);
+    List<KeyDto> Build(List<Key> entities);
+
+    RegisterKeyResultDto BuildResult(Key entity);
 }
 
