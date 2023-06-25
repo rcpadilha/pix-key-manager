@@ -13,14 +13,17 @@ public class KeysController : BaseController
 	private readonly IRegisterKeyUseCase _registerKey;
     private readonly IListKeysByAccountUseCase _listKeysByAccount;
     private readonly IRemoveKeyUseCase _removeKey;
+    private readonly IMigrateKeyUseCase _migrateKey;
 
     public KeysController(IRegisterKeyUseCase registerKey,
                          IListKeysByAccountUseCase listKeysByAccount,
-                         IRemoveKeyUseCase removeKey): base()
+                         IRemoveKeyUseCase removeKey,
+                         IMigrateKeyUseCase migrateKey) : base()
     {
         _registerKey = registerKey;
         _listKeysByAccount = listKeysByAccount;
         _removeKey = removeKey;
+        _migrateKey = migrateKey;
     }
 
     [HttpPost]
@@ -40,8 +43,14 @@ public class KeysController : BaseController
     [HttpDelete("{id}")]
     public IActionResult RemoveKey(string id)
     {
-        _removeKey.Execute(id);
+        _removeKey.Execute(UserAccountId!, id);
         return Ok();
+    }
+
+    [HttpPut]
+    public IActionResult MigrateKey(MigrateKeyDto key) {
+        _migrateKey.Execute(key, UserAccountId!);
+        return Ok();      
     }
 }
 

@@ -8,8 +8,12 @@ public interface IKeyRepository
 
     List<Key> FindByAccount(string accountId);
 
+    Key? FindByValue(string value);
+
     Key? FindById(string id);
 
     void Delete(Key key);
+
+    void Update(Key key);
 }
 

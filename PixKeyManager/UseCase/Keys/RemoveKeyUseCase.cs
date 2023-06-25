@@ -1,28 +1,26 @@
 ﻿using PixKeyManager.Data.Repository;
-using PixKeyManager.Exceptions;
+using PixKeyManager.Domain.Validators;
 
 namespace PixKeyManager.UseCase.Keys;
 
 public class RemoveKeyUseCase: IRemoveKeyUseCase
 {
     private readonly IKeyRepository _keyRepository;
+    private readonly IKeyOwnershipValidator _keyOwnershipValidator;
 
-    public RemoveKeyUseCase(IKeyRepository keyRepository)
+    public RemoveKeyUseCase(IKeyRepository keyRepository,
+                            IKeyOwnershipValidator keyOwnershipValidator)
     {
         _keyRepository = keyRepository;
+        _keyOwnershipValidator = keyOwnershipValidator;
     }
 
-    public void Execute(string id)
+    public void Execute(string accountId, string keyId)
     {
-        var key = _keyRepository.FindById(id);
+        var key = _keyRepository.FindById(keyId);
 
-        if (key != null)
-        {
-            _keyRepository.Delete(key);
-            return;
-        }
-
-        throw new PixKeyNotFoundException();
+        _keyOwnershipValidator.Validate(key, accountId);
+        _keyRepository.Delete(key!);
     }
 }
 

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using PixKeyManager.Data.Context;
 using PixKeyManager.Data.Repository;
 using PixKeyManager.Domain.Builder;
+using PixKeyManager.Domain.Validators;
 using PixKeyManager.Filters;
 using PixKeyManager.UseCase.Account;
 using PixKeyManager.UseCase.Auth;
@@ -61,10 +62,12 @@ builder.Services.AddSingleton<IAccountBuilder, AccountBuilder>();
 builder.Services.AddScoped<IRegisterKeyUseCase, RegisterKeyUseCase>();
 builder.Services.AddScoped<IListKeysByAccountUseCase, ListKeysByAccountUseCase>();
 builder.Services.AddScoped<IRemoveKeyUseCase, RemoveKeyUseCase>();
-
+builder.Services.AddScoped<IMigrateKeyUseCase, MigrateKeyUseCase>();
 builder.Services.AddScoped<IAuthUseCase, AuthUseCase>();
-
 builder.Services.AddScoped<IRegisterAccountUseCase, RegisterAccountUseCase>();
+
+// DI - Validators
+builder.Services.AddSingleton<IKeyOwnershipValidator, KeyOwnershipValidator>();
 
 // DI - Utils
 builder.Services.AddSingleton<IJwtTokenUtils, JwtTokenUtils>();

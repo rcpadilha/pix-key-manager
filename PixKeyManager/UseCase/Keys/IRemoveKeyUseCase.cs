@@ -2,7 +2,7 @@
 
 public interface IRemoveKeyUseCase
 {
-    void Execute(string id);
+    void Execute(string accountId, string keyId);
 }
 
 

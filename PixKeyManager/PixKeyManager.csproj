@@ -32,6 +32,8 @@
     <None Remove="Utils\Constants\" />
     <None Remove="Domain\Model\Account\" />
     <None Remove="UseCase\Account\" />
+    <None Remove="Dockerfile.txt" />
+    <None Remove="Domain\Validators\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -54,6 +56,7 @@
     <Folder Include="Utils\Constants\" />
     <Folder Include="Domain\Model\Account\" />
     <Folder Include="UseCase\Account\" />
+    <Folder Include="Domain\Validators\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />

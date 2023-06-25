@@ -21,17 +21,25 @@ public class KeyRepository: IKeyRepository
             .ToList();
     }
 
-    public void Save(Key key)
-    {
-        _context.Keys.Add(key);
-        _context.SaveChanges();
-    }
-
     public Key? FindById(string id)
     {
         return _context.Keys
             .AsNoTracking()
             .SingleOrDefault(k => k.Id == id);
+    }
+
+    public Key? FindByValue(string value)
+    {
+        return _context.Keys
+            .AsNoTracking()
+            .SingleOrDefault(k =>
+                k.Value == value);
+    }
+
+    public void Save(Key key)
+    {
+        _context.Keys.Add(key);
+        _context.SaveChanges();
     }
 
     public void Delete(Key key)
@@ -40,5 +48,10 @@ public class KeyRepository: IKeyRepository
         _context.SaveChanges();
     }
 
+    public void Update(Key key)
+    {
+        _context.Keys.Remove(key);
+        _context.SaveChanges();
+    }
 }
 
